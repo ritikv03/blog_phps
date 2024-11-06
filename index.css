@@ -1,0 +1,49 @@
+body {
+    background-color: #ffffff;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.bg-dark-purple {
+    background-color: #4b2c6f !important; /* Ensure background color is applied */
+}
+
+.navbar-text {
+    color: #f3e5f5;
+    font-style: italic;
+    font-size: 1.1rem;
+    padding-left: 15px;
+}
+
+.nav-link {
+    color: #f3e5f5;
+    font-weight: bold;
+    opacity: 0.9;
+}
+
+.nav-link:hover {
+    color: #d4b0ff;
+}
+
+h1 {
+    color: #4b2c6f;
+    padding-top: 15px;
+    margin-bottom: 20px;
+}
+
+footer {
+    background-color: #4b2c6f; /* Same color as navbar */
+    color: #f3e5f5;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    .navbar-text {
+        font-size: 0.9rem; /* Adjust the font size for smaller screens */
+    }
+}
