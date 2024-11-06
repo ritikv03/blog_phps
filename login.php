@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $result->fetch_assoc();
         if (password_verify($password, $user['password'])) {
             $_SESSION['username'] = $username;
-            header('Location: index.php');
+            // Set localStorage through JavaScript on successful login
+            echo "<script>localStorage.setItem('isLoggedIn', 'true'); window.location.href = 'index.php';</script>";
             exit;
         } else {
             $error = "Invalid password.";
@@ -50,6 +51,7 @@ $conn->close();
             <input type="password" name="password" placeholder="Password" required><br>
             <button type="submit">Login</button>
         </form>
+        <p>Don't have an account? <a href="signup.php">Sign up here</a></p>
     </div>
 </body>
 </html>
