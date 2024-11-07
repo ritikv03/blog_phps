@@ -24,7 +24,7 @@
                         <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="login.php">Login</a>
+                        <a id="authLink" class="nav-link" href="login.php">Login</a> <!-- Login link by default -->
                     </li>
                 </ul>
             </div>
@@ -50,6 +50,14 @@
 
         if (isLoggedIn) {
             document.getElementById('createBlogBtn').style.display = 'block'; // Show Create Blog button if logged in
+            document.getElementById('authLink').textContent = 'Logout'; // Change Login to Logout
+            document.getElementById('authLink').href = '#'; // Remove login link for logout
+
+            // Add logout functionality
+            document.getElementById('authLink').addEventListener('click', function() {
+                localStorage.removeItem('isLoggedIn'); // Clear login status
+                window.location.reload(); // Reload to reflect the login button
+            });
         }
 
         // Handle Create Blog button click
