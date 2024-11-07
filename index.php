@@ -1,3 +1,18 @@
+<?php
+session_start();
+$conn = new mysqli('localhost', 'root', '', 'blog_db'); // Replace with your MySQL credentials
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch blogs from the database
+$result = $conn->query("SELECT * FROM blogs ORDER BY created_at DESC");
+
+// Get logged-in user's name from session or other means
+$loggedInUser = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : ''; // Assuming session stores user name
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +51,35 @@
             <h1>Welcome to BlogVault</h1>
             <button id="createBlogBtn" class="btn btn-primary" style="display:none;">Create Blog</button> <!-- Hidden by default -->
         </main>
-        <!-- Display blogs here -->
+        
+        <!-- Blog Content Section -->
+        <div class="row">
+            <?php while ($blog = $result->fetch_assoc()): ?>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Author: <?php echo htmlspecialchars($blog['author_name']); ?></h5>
+                            <p class="card-text"><?php echo nl2br(htmlspecialchars($blog['content'])); ?></p>
+
+                            <!-- Display Image if Available -->
+                            <?php if (!empty($blog['image_path'])): ?>
+                                <img src="<?php echo htmlspecialchars($blog['image_path']); ?>" alt="Blog Image" class="img-fluid mb-3">
+                            <?php endif; ?>
+
+                            <small class="text-muted">Published on: <?php echo $blog['created_at']; ?></small>
+
+                            <!-- Delete Button for Logged-in User's Blogs -->
+                            <?php if ($blog['author_name'] == $loggedInUser): ?>
+                                <form method="POST" action="delete_blog.php" style="display:inline;">
+                                    <input type="hidden" name="blog_id" value="<?php echo $blog['id']; ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm mt-3">Delete</button>
+                                </form>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
     </div>
 
     <footer class="bg-dark-purple text-white text-center py-3 mt-auto">
@@ -84,5 +127,7 @@
             }
         });
     </script>
+
+<?php $conn->close(); ?>
 </body>
 </html>
